@@ -19,7 +19,9 @@ public class GetBookingTest {
         assertThat(response.getStatusCode()).isEqualTo(200);
 
         String responseBody = response.getBody().asString();
-        List<Booking> bookings = objectMapper.readValue(responseBody,new TypeReference<List<Booking()>>);
+        List<Booking> bookings = objectMapper.readValue(responseBody,new TypeReference<List<Booking>>()
+        {}
+        );
 
         assertThat(bookings).isNotEmpty();
 
