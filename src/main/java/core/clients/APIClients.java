@@ -65,4 +65,13 @@ public class APIClients {
                 .response();
     }
 
+    public Response getbookoingById(int id) {
+        return getRequestSpec()
+                .when()
+                .get(ApiEndpoints.BOOKING.getPath() + "/" + id)
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();
+    }
 }
