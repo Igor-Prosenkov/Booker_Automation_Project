@@ -11,6 +11,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class    GetBookingTest {
+    public List<Booking> bookings;
     private APIClients apiClients;
     private ObjectMapper objectMapper;
 
