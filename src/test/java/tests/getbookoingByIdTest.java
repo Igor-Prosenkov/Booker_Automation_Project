@@ -22,7 +22,7 @@ public class getbookoingByIdTest {
 
         @Test
     public void TestGetBookingId() throws IOException {
-            Response response =apiClients.getbookoingById(1);
+            Response response =apiClients.getBookingById(3);
             objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
             assertThat(response.getStatusCode()).isEqualTo(200);
             ObjectMapper objectMapper = new ObjectMapper();

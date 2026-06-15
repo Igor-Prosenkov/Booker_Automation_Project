@@ -9,7 +9,7 @@ import io.restassured.specification.RequestSpecification;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Filter;
+import io.restassured.filter.Filter;
 
 
 public class APIClients {
@@ -61,7 +61,7 @@ public class APIClients {
                 .baseUri(baseUrl)
                 .header("Content-Type","application/json")
                 .header("Accept", "application/json")
-                .filter(addAuthTokenFilter);
+                .filter(addAuthTokenFilter());
 
     }
 
@@ -107,7 +107,7 @@ public class APIClients {
                 .response();
     }
 
-    public Response getbookoingById(int id) {
+    public Response getBookingById (int id) {
         return getRequestSpec()
                 .when()
                 .get(ApiEndpoints.BOOKING.getPath() + "/" + id)

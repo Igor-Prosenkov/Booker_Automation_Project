@@ -17,20 +17,37 @@ public class DeleteBokkingTest {
     @BeforeEach
     public void setup() {
         apiClients = new APIClients();
-        apiClients.createToken("admin","password123");
+        apiClients.createToken("admin", "password123");
         token = apiClients.getToken();
     }
 
     @Test
     public void testDeleteBooking() {
         GetBookingTest existingTest = new GetBookingTest();
-        existingTest.testGetBooking(); //запускаем существующий тест
+// Передаем в него нашего авторизованного клиента
+        existingTest.apiClients = this.apiClients;
 
-        List<Booking> bookings = existingTest.bookings;
-        int bookingId = bookings.get(0).getBookingid();
+        try {
+            // Вместо обращения к полю, ВЫЗЫВАЕМ МЕТОД
+            List<Booking> bookings = existingTest.getAllBookings(); // Теперь мы вызываем метод!
 
-        Response response = apiClients.deleteBooking(bookingId);
+            // Проверка на случай, если список все-таки окажется пустым
+            if (bookings == null || bookings.isEmpty()) {
+                throw new AssertionError("Список броней пуст. Нечего удалять.");
+            }
 
-        assertThat(response.getStatusCode()).isEqualTo(201);
+            int bookingId = bookings.get(0).getBookingid();
+
+            Response response = apiClients.deleteBooking(bookingId);
+            assertThat(response.getStatusCode()).isEqualTo(201);
+
+        } catch (AssertionError e) {
+            // Обрабатываем ошибки из getAllBookings()
+            throw new AssertionError("Не удалось получить или обработать список броней.", e);
+        } catch (Exception e) {
+            // Обрабатываем любые другие непредвиденные ошибки
+            throw new AssertionError("Произошла непредвиденная ошибка: " + e.getMessage(), e);
+
+        }
     }
 }
