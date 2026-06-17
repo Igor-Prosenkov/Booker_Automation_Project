@@ -1,4 +1,6 @@
 package core.clients;
+import core.models.BookingDates;
+import core.models.CreateBookingRequest;
 import core.settings.ApiEndpoints;
 import io.restassured.RestAssured;
 import io.restassured.filter.FilterContext;
@@ -127,5 +129,13 @@ public class APIClients {
                 .statusCode(201) //код ответа
                 .extract()
                 .response();
+    }
+
+    public Response createBooking(CreateBookingRequest request) {
+        return getRequestSpec()
+                .body(request)
+                .when()
+                .post(ApiEndpoints.BOOKING.getPath());
+
     }
 }
