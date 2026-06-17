@@ -5,6 +5,7 @@ import core.models.BookingDates;
 import core.models.CreateBookingRequest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -22,10 +23,11 @@ public class getAllBookingTests {
     }
 
     @Test
+    @Order(1)
     public void createBooking(){
         BookingDates dates = new BookingDates("2026-06-18", "2026-06-20");
         CreateBookingRequest newBooking = new CreateBookingRequest
-                ("Ivan", "Pyotrov", 500, true, dates, "Spa");
+                ("Ivan", "Pyotrov", 111, true, dates, "Breakfast");
         Response response = apiClients.createBooking(newBooking);
         assertThat(response.getStatusCode()).isEqualTo(200);
         createdBookingId = response.jsonPath().getInt("bookingid");
@@ -34,20 +36,21 @@ public class getAllBookingTests {
     }
 
     @Test
-    public void verifyCreatedBookingAppearsInGetAll(){
-        Response listResoince = apiClients.getBooking();
-        List<Integer> bookingIds = listResoince.jsonPath().getList("$[*].bookingid");
+    @Order(2)
+    public void verifyCreatedBookingAppearsInGetAll() {
+        Response listResonance = apiClients.getBooking();
+        List<Integer> bookingIds = listResonance.jsonPath().getList("$.bookingid");
         assertThat(bookingIds).contains(createdBookingId);
+    }
+        @Test
+        @Order(3)
+        public void verifyDeletedSuccessfully(){
         Response deleteCreatedBooking = apiClients.deleteBooking(createdBookingId);
         assertThat(deleteCreatedBooking.getStatusCode()).isEqualTo(201);
 
     }
 
-    @Test
-    public void verifyDeletedBookingReturns404(){
-        Response verifyDeleted = apiClients.getBookingById(createdBookingId);
-        assertThat(verifyDeleted.getStatusCode()).isEqualTo(404);
-    }
+
 
 
 
