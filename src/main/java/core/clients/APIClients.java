@@ -138,4 +138,18 @@ public class APIClients {
                 .post(ApiEndpoints.BOOKING.getPath());
 
     }
+
+    public Response updateBooking(int bookingId,CreateBookingRequest request){
+        return getRequestSpec()
+                .pathParam("id", bookingId)
+                .body(request)
+                .when()
+                .put(ApiEndpoints.BOOKING.getPath() + "/{id}")
+                .then()
+                .log().all()
+                .statusCode(200)
+                .extract()
+                .response();
+    }
+
 }
