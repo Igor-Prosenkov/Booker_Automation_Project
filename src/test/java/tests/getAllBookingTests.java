@@ -1,11 +1,9 @@
-package tests;
-
 import core.clients.APIClients;
 import core.models.BookingDates;
 import core.models.CreateBookingRequest;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,39 +17,25 @@ public class getAllBookingTests {
     @BeforeEach
     public void setup() {
         apiClients = new APIClients();
-        apiClients.createToken("admin","password123");
-    }
-
-    @Test
-    @Order(1)
-    public void createBooking(){
+        apiClients.createToken("admin", "password123");
         BookingDates dates = new BookingDates("2026-06-18", "2026-06-20");
         CreateBookingRequest newBooking = new CreateBookingRequest
                 ("Ivan", "Pyotrov", 111, true, dates, "Breakfast");
         Response response = apiClients.createBooking(newBooking);
         assertThat(response.getStatusCode()).isEqualTo(200);
         createdBookingId = response.jsonPath().getInt("bookingid");
-
-
     }
 
     @Test
-    @Order(2)
     public void verifyCreatedBookingAppearsInGetAll() {
         Response listResonance = apiClients.getBooking();
-        List<Integer> bookingIds = listResonance.jsonPath().getList("$.bookingid");
+        List<Integer> bookingIds = listResonance.jsonPath().getList("bookingid");
         assertThat(bookingIds).contains(createdBookingId);
     }
-        @Test
-        @Order(3)
-        public void verifyDeletedSuccessfully(){
+
+    @AfterEach
+    public void verifyDeletedSuccessfully() {
         Response deleteCreatedBooking = apiClients.deleteBooking(createdBookingId);
         assertThat(deleteCreatedBooking.getStatusCode()).isEqualTo(201);
-
     }
-
-
-
-
-
 }
