@@ -34,13 +34,13 @@ public void ReturnsCorrectBooking(){
     System.out.println("Статус чтения: " + response1.getStatusCode());
     System.out.println("Тело ответа: " + response1.getBody().asPrettyString());
         BookingDates actualDates = response1.jsonPath()
-                .getObject("bookingDates", BookingDates.class);
+                .getObject("bookingdates", BookingDates.class);
 assertThat(response1.getStatusCode()).isEqualTo(200);
-assertThat(response1.jsonPath().getString("firstName")).isEqualTo("Ivan");
-assertThat(response.jsonPath().getString("additionalNeeds")).isEqualTo("Breakfast");
-assertThat(response.jsonPath().getInt("totalPrice")).isEqualTo(111);
-assertThat(response.jsonPath().getBoolean("depositPaid")).isEqualTo(true);
-        assertThat(response.jsonPath().getString("lastName")).isEqualTo("Pyotrov");
+assertThat(response1.jsonPath().getString("firstname")).isEqualTo("Ivan");
+assertThat(response1.jsonPath().getString("additionalneeds")).isEqualTo("Breakfast");
+assertThat(response1.jsonPath().getInt("totalprice")).isEqualTo(111);
+assertThat(response1.jsonPath().getBoolean("depositpaid")).isEqualTo(true);
+        assertThat(response1.jsonPath().getString("lastname")).isEqualTo("Pyotrov");
         assertThat(actualDates.getCheckin()).isEqualTo("2026-06-27");
         assertThat(actualDates.getCheckout()).isEqualTo("2026-06-30");
     }
